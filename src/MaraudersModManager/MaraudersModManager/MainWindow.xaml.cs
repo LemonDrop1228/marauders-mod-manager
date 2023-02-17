@@ -1,28 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using MaraudersModManager.Commands;
+using PropertyChanged;
 
-namespace MaraudersModManager
+namespace MaraudersModManager;
+
+[AddINotifyPropertyChangedInterface]
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public string MagicTitle => $"You're a Wizard {Environment.UserName}";
+    public bool ShowApp { get; set; }
+    
+    public ICommand LogoFadeOutComplete => new RelayCommand(o =>
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        Logo.IsHitTestVisible = false;
+        ShowApp = true;
+    }, o => true);
+    
+    public MainWindow()
+    {
+        this.DataContext = this;
+        InitializeComponent();
     }
+
+    private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if(e.ChangedButton == MouseButton.Left && e.ButtonState == MouseButtonState.Pressed)
+            DragMove();
+    }
+
+    private void MinimizeClicked(object sender, RoutedEventArgs e) => this.WindowState = WindowState.Minimized;
+
+    private void MaximizeClicked(object sender, RoutedEventArgs e) =>
+        this.WindowState = this.WindowState switch
+        {
+            WindowState.Normal => WindowState.Maximized,
+            WindowState.Maximized => WindowState.Normal
+        };
+
+    private void CloseWindowClicked(object sender, RoutedEventArgs e) => this.Close();
 }
