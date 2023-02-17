@@ -4,9 +4,73 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MaraudersModManager"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        xmlns:st="http://schemas.spicytaco.io/"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Title="MainWindow" Height="1000" Width="1550"
+        MinHeight="375" MinWidth="600"
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" ResizeMode="CanResizeWithGrip" 
+        AllowsTransparency="True" Background="Transparent" MouseDown="MainWindow_OnMouseDown">
+    
+    <Window.Resources>
+        <BitmapImage x:Key="LogoSplash" UriSource="../Resources/Images/marauders-maplogo.png" />
+        <xf:AnimationSettings x:Key="FadeAndBlurIn"
+                              Kind="FadeFrom,BlurFrom"
+                              Opacity="0"
+                              BlurRadius="250"
+                              Delay="500"
+                              Duration="1500"/>
+        <xf:AnimationSettings x:Key="FadeAndBlurInNoDelay"
+                              Kind="FadeFrom,BlurFrom"
+                              Opacity="0"
+                              BlurRadius="250"
+                              Duration="250"/>
+        <xf:AnimationSettings x:Key="FadeAndBlurOut"
+                              Kind="FadeTo,BlurTo"
+                              Opacity="0.25"
+                              BlurRadius="5"
+                              Duration="500"/>
+    </Window.Resources>
+    
+    <Border Padding="15">
+        <materialDesign:Card Background="#EDD08F" UniformCornerRadius="0" Padding="3">
+            <Grid>
+                <Image x:Name="Logo" Source="{StaticResource LogoSplash}" Stretch="Uniform"
+                       xf:Animations.Primary="{StaticResource FadeAndBlurIn}" 
+                       xf:Animations.Secondary="{xf:Animate BasedOn={StaticResource FadeAndBlurOut}, Event=MouseDown}"
+                       xf:Animations.SecondaryCompletionCommand="{Binding Path=LogoFadeOutComplete, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
+                       xf:Animations.AllowOpacityReset="False"/>
+                
+                <Grid xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeAndBlurInNoDelay}, Event=None}" Opacity="0"
+                      xf:Animations.PrimaryBinding="{Binding ShowApp}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="75"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Kind="MagicWand" Margin="6 3" Height="32" Width="32" VerticalAlignment="Top"/>
+                        <Label Grid.Column="1" FontSize="32" FontFamily="/Resources/Fonts/#Purple 3" Content="{Binding MagicTitle}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <st:StackPanel Grid.Column="2" MarginBetweenChildren="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" ZIndex="100"
+                                       Margin="2">
+                            <Button Content="{materialDesign:PackIcon Kind=WindowMinimize, Size=24}" Click="MinimizeClicked"/>
+                            <Button Content="{materialDesign:PackIcon Kind=WindowMaximize, Size=24}" Click="MaximizeClicked"/>
+                            <Button Content="{materialDesign:PackIcon Kind=WindowClose, Size=24}" Click="CloseWindowClicked"/>
+                        </st:StackPanel>
+                    </Grid>
+                    
+                </Grid>
+            </Grid>
+        </materialDesign:Card>
+        
+    </Border>
 </Window>
