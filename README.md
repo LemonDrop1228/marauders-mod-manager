@@ -1,2 +1,2 @@
-# marauders-mod-manager
+# Marauders Mod Manager
 seemingly a dusty old piece of parchment paper
