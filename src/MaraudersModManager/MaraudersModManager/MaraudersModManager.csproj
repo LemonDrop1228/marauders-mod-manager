@@ -9,6 +9,8 @@
 
     <ItemGroup>
       <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+      <PackageReference Include="Gameloop.Vdf" Version="0.6.2" />
+      <PackageReference Include="Gameloop.Vdf.JsonConverter" Version="0.2.1" />
       <PackageReference Include="Janitor.Fody" Version="1.9.0" />
       <PackageReference Include="MaterialDesignColors" Version="2.1.1" />
       <PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
@@ -32,9 +34,6 @@
         <Link>Resources\Images\marauders-maplogo.png</Link>
       </Resource>
       <None Remove="appsettings.yaml" />
-      <Content Include="appsettings.yaml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Remove="Resources\Images\marauders-map-moody.gif" />
       <None Remove="Resources\Fonts\purple-3.ttf" />
       <Resource Include="Resources\Fonts\purple-3.ttf" />
@@ -50,6 +49,13 @@
 
     <ItemGroup>
       <None Remove="Resources\Images\marauders-maplogo.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="appsettings.json" />
+      <Content Include="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
