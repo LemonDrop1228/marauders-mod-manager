@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:MaraudersModManager.Settings"
              xmlns:base="clr-namespace:MaraudersModManager.Controls.Base.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:validation="clr-namespace:MaraudersModManager.Validation.Rules"
+             xmlns:behaviors="clr-namespace:MaraudersModManager.Behaviors"
              xmlns:st="http://schemas.spicytaco.io/"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="750" d:DesignWidth="1150" Background="Transparent">
     <Border Padding="25">
@@ -15,61 +19,136 @@
                 <RowDefinition/>
                 <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
-            
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-
-                <TextBlock Text="Steam Install Folder: " Grid.Row="0" Grid.Column="0" Margin="5"
-                           VerticalAlignment="Center" />
-                <st:StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" MarginBetweenChildren="5"
-                               Margin="5">
-                    <TextBox Text="{Binding SteamOptions.SteamInstallPath}" Margin="0,0,5,0" VerticalAlignment="Center"
-                             Width="350" />
-                    <Button Content="{materialDesign:PackIcon Kind=FolderOpen, Size=24}" Grid.Row="0" Grid.Column="2"
-                            Margin="0,0,5,0" VerticalAlignment="Center" />
+            <st:StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="15">
+                <Expander Header="File System" IsExpanded="True" Background="#2AD7D7D7" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1">
+                    <st:StackPanel Orientation="Vertical">
+                        <Separator Background="{DynamicResource MaterialDesignDivider}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            
+                            
+                            <!--Steam Install Folder-->
+                            <TextBlock Text="Steam Install Folder: " Grid.Row="1" Grid.Column="0" Margin="5"
+                                       VerticalAlignment="Center" />
+                            <st:StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal"
+                                           MarginBetweenChildren="5"
+                                           Margin="5">
+                                <TextBox VerticalAlignment="Center"
+                                         Width="350">
+                                    <TextBox.Text>
+                                        <Binding
+                                            Path="SteamOptions.SteamInstallPath"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <validation:PathExistsValidationRule
+                                                    ValidatesOnTargetUpdated="True" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <Button Content="{materialDesign:PackIcon Kind=FolderOpen, Size=24}" VerticalAlignment="Center" >
+                                    <b:Interaction.Behaviors>
+                                        <behaviors:FolderDialogButtonBehavior FolderName="{Binding SteamOptions.SteamInstallPath, Mode=TwoWay}"/>
+                                    </b:Interaction.Behaviors>
+                                </Button>
+                            </st:StackPanel>
+                            <!--Steam Install Folder-->
+                            
+                            <!--Game Install Folder-->
+                            <TextBlock Text="Game Install Folder: " Grid.Row="2" Grid.Column="0" Margin="5"
+                                       VerticalAlignment="Center" />
+                            <st:StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal"
+                                           MarginBetweenChildren="5"
+                                           Margin="5">
+                                <TextBox VerticalAlignment="Center"
+                                         Width="350">
+                                    <TextBox.Text>
+                                        <Binding
+                                            Path="SteamOptions.GameInstallPath"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <validation:PathExistsValidationRule
+                                                    ValidatesOnTargetUpdated="True" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <Button Content="{materialDesign:PackIcon Kind=FolderOpen, Size=24}" VerticalAlignment="Center" >
+                                    <b:Interaction.Behaviors>
+                                        <behaviors:FolderDialogButtonBehavior FolderName="{Binding SteamOptions.GameInstallPath, Mode=TwoWay}"/>
+                                    </b:Interaction.Behaviors>
+                                </Button>
+                            </st:StackPanel>
+                            <!--Game Install Folder-->
+                                                        
+                            <!--Mod Root Folder-->
+                            <TextBlock Text="Mod Root Folder: " Grid.Row="3" Grid.Column="0" Margin="5"
+                                       VerticalAlignment="Center" />
+                            <st:StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal"
+                                           MarginBetweenChildren="5"
+                                           Margin="5">
+                                <TextBox VerticalAlignment="Center"
+                                         Width="350">
+                                    <TextBox.Text>
+                                        <Binding
+                                            Path="MarauderOptions.ModInstallPath"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <validation:PathExistsValidationRule
+                                                    ValidatesOnTargetUpdated="True" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <Button Content="{materialDesign:PackIcon Kind=FolderOpen, Size=24}" VerticalAlignment="Center" >
+                                    <b:Interaction.Behaviors>
+                                        <behaviors:FolderDialogButtonBehavior FolderName="{Binding SteamOptions.SteamInstallPath, Mode=TwoWay}"/>
+                                    </b:Interaction.Behaviors>
+                                </Button>
+                            </st:StackPanel>
+                            <!--Mod Root Folder-->
+                                                        
+                            <!--Mod Download Folder-->
+                            <TextBlock Text="Mod Download Folder: " Grid.Row="4" Grid.Column="0" Margin="5"
+                                       VerticalAlignment="Center" />
+                            <st:StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal"
+                                           MarginBetweenChildren="5"
+                                           Margin="5">
+                                <TextBox VerticalAlignment="Center"
+                                         Width="350">
+                                    <TextBox.Text>
+                                        <Binding
+                                            Path="MarauderOptions.ModInstallPath"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <validation:PathExistsValidationRule
+                                                    ValidatesOnTargetUpdated="True" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <Button Content="{materialDesign:PackIcon Kind=FolderOpen, Size=24}" VerticalAlignment="Center" >
+                                    <b:Interaction.Behaviors>
+                                        <behaviors:FolderDialogButtonBehavior FolderName="{Binding MarauderOptions.ModInstallPath, Mode=TwoWay}"/>
+                                    </b:Interaction.Behaviors>
+                                </Button>
+                            </st:StackPanel>
+                            <!--Mod Download Folder-->
+                        </Grid>
+                    </st:StackPanel>
+                </Expander>
                 </st:StackPanel>
-
-                <TextBlock Text="Game Install Folder: " Grid.Row="1" Grid.Column="0" Margin="5"
-                           VerticalAlignment="Center" />
-                <st:StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" MarginBetweenChildren="5"
-                               Margin="5">
-                    <TextBox Text="{Binding SteamOptions.GameInstallPath}" Margin="0,0,5,0" VerticalAlignment="Center"
-                             Width="350" />
-                    <Button Content="{materialDesign:PackIcon Kind=FolderOpen, Size=24}" Margin="0,0,5,0"
-                            VerticalAlignment="Center" />
-                </st:StackPanel>
-
-                <TextBlock Text="Mod Install Folder: " Grid.Row="2" Grid.Column="0" Margin="5"
-                           VerticalAlignment="Center" />
-                <st:StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" MarginBetweenChildren="5"
-                               Margin="5">
-                    <TextBox Text="{Binding MarauderOptions.ModInstallPath}" Margin="0,0,5,0"
-                             VerticalAlignment="Center" Width="350" />
-                    <Button Content="{materialDesign:PackIcon Kind=FolderOpen, Size=24}" Margin="0,0,5,0"
-                            VerticalAlignment="Center" />
-                </st:StackPanel>
-
-                <TextBlock Text="Mod Download Folder: " Grid.Row="3" Grid.Column="0" Margin="5"
-                           VerticalAlignment="Center" />
-                <st:StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" MarginBetweenChildren="5"
-                               Margin="5">
-                    <TextBox Text="" Margin="0,0,5,0" VerticalAlignment="Center" Width="350" />
-                    <Button Content="{materialDesign:PackIcon Kind=FolderOpen, Size=24}" Margin="0,0,5,0"
-                            VerticalAlignment="Center" />
-                </st:StackPanel>
-            </Grid>
-            
             <Button Content="Save" Grid.Row="1" Margin="0,5,0,0" HorizontalAlignment="Right" Click="SaveSettingsClicked"/>
         </Grid>
     </Border>
