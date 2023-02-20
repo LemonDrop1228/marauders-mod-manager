@@ -29,10 +29,10 @@ jobs:
       run: dotnet restore ${{env.PROJECT_PATH}}
 
     - name: Build
-      run: dotnet build ${{env.PROJECT_PATH}} -c Release
+      run: dotnet build ${{env.PROJECT_PATH}} -c Release --clp:ErrorsOnly
 
     - name: Publish
-      run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 /p:PublishSingleFile=true /p:WarningLevel=0
+      run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 /p:PublishSingleFile=true /p:WarningLevel=0 --clp:ErrorsOnly
 
     - name: Zip Publish Folder
       run: Compress-Archive -Path ${{ env.PUBLISH_DIR }} -DestinationPath ./bin/Release/${{ env.RELEASE_ZIP_NAME }}.zip
