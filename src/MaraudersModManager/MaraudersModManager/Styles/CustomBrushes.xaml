@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="ParchmentColor">#EDD08F</Color>
+    <SolidColorBrush x:Key="ParchmentBrush" Color="{StaticResource ParchmentColor}"/>
+    <Color x:Key="ParchmentColor50">#7FEDD08F</Color>
+    <SolidColorBrush x:Key="ParchmentBrush50" Color="{StaticResource ParchmentColor50}"/>
+    <Color x:Key="ParchmentColor75">#BFEDD08F</Color>
+    <SolidColorBrush x:Key="ParchmentBrush75" Color="{StaticResource ParchmentColor75}"/>
+</ResourceDictionary>

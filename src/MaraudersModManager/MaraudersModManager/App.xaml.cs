@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Reflection;
 using System.Windows;
+using MaraudersModManager.Controls.Base.View;
 using MaraudersModManager.Extensions;
 using MaraudersModManager.FileSystem;
 using MaraudersModManager.Settings;
 using MaraudersModManager.Steam;
+using MaraudersModManager.UI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,51 +34,26 @@ public partial class App : Application
     public void ConfigureServices(IServiceCollection serviceCollection)
     {
         serviceCollection
-            .AddSingleton<IConfiguration>(configuration)
+            .AddSingleton(configuration)
             .AddSingleton<ISettingsManagerService, SettingsManagerService>()
             .AddSingleton<IFileSystemService, FileSystemService>()
             .AddSingleton<ISteamService, SteamService>()
-            .AddSingleton<MainWindow>();    
+            .AddSingleton<IViewControllerService, ViewControllerService>()
+            .AddSingleton<MainWindow>(); 
+        
+        Assembly.GetEntryAssembly().GetTypesAssignableFrom<IBaseView, BaseView>().ForEach((t)=>
+        {
+            serviceCollection.AddSingleton(typeof(IBaseView), t);
+        });
     }
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
         var mainWindow = host.Services.GetService<MainWindow>();
         
-        var settingService = host.Services.GetService<ISettingsManagerService>();
         var steamService = host.Services.GetService<ISteamService>();
-
-
-        if (!settingService.IsInitialized)
-        {
-            var steamPath = (Registry.GetValue(SteamRegistryKey, SteamInstallPathRegistryValue, string.Empty) as string).Replace("/", "\\\\");
         
-            if (steamPath.HasContent() && Directory.Exists(steamPath))
-            {
-                steamService.Initialize(steamPath);
-            
-                if (Directory.Exists(Path.Combine(steamPath, LibraryConfigFileRoot)) &&
-                    File.Exists(Path.Combine(steamPath, LibraryConfigFileRoot, LibraryConfigFileName)))
-                {
-                    string gameRootPath = steamService.GetGameRootPath();
-
-                    if (gameRootPath.HasContent() && Directory.Exists(gameRootPath))
-                    {
-                        settingService.Initialize(steamPath, gameRootPath);
-                        settingService.Update().Save();
-#if DEBUG
-                        Debug.WriteLine($"Steam Path: {steamPath}");
-                        Debug.WriteLine($"Game Root Path: {gameRootPath}");
-#endif
-                    }
-                }
-            }
-        }
-
-
-        // host.Services.GetService<IViewService>().InitializeViews(
-        //     host.Services.GetServices<IBaseView>()
-        // );
+        steamService.Initialize();
 
         mainWindow.Closed += (s, e) => {
             Debug.WriteLine("App shutting down");
@@ -88,8 +64,7 @@ public partial class App : Application
     }
 
     private void ShutItDown()
-    {
-        using (host)
+    { using (host)
         {
             host.StopAsync();
         }
