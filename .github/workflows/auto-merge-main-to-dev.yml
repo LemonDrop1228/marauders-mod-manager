@@ -1,4 +1,4 @@
-name: Auto Merge Main to Dev: 
+name: Auto Merge Main to Dev
   pull_request:
     branches: [main]
     types: [closed]jobs:
