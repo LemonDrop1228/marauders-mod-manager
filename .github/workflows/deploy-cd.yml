@@ -39,11 +39,11 @@ jobs:
       run: Compress-Archive -Path "${{ env.PROJECT_ROOT }}${{ env.PUBLISH_DIR }}" -DestinationPath "${{ env.PROJECT_ROOT }}${{ env.ARTIFACT_DIR }}${{ env.RELEASE_ZIP_NAME }}"
 
     - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Build-Artifact
-          path: ${{ env.PROJECT_ROOT }}${{ env.ARTIFACT_DIR }}${{ env.RELEASE_ZIP_NAME }}
-          retention-days: 1
+      uses: actions/upload-artifact@v3
+      with:
+        name: Build-Artifact
+        path: ${{ env.PROJECT_ROOT }}${{ env.ARTIFACT_DIR }}${{ env.RELEASE_ZIP_NAME }}
+        retention-days: 1
 
   release:
     needs: build
