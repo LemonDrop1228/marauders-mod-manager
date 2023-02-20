@@ -61,9 +61,9 @@ jobs:
         draft: false
         prerelease: false
     - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-            name: Build-Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: Build-Artifact
 
     - name: Upload Artifacts
       id: upload-release-asset
