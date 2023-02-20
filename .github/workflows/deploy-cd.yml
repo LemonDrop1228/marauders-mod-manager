@@ -10,7 +10,7 @@ env:
     PROJECT_NAME: MaraudersModManager.csproj
     PUBLISH_DIR: bin/Release/net6.0-windows/win-x64/publish
     ARTIFACT_DIR: bin/Release/
-    RELEASE_ZIP_NAME: Release-${{ github.ref_name }}
+    RELEASE_ZIP_NAME: Release-${{ github.ref_name }}.zip
 
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
       run: dotnet publish "${{ env.PROJECT_ROOT }}${{ env.PROJECT_NAME }}" -c Release -r win-x64 /p:PublishSingleFile=true /p:WarningLevel=0 --clp:ErrorsOnly
 
     - name: Zip Publish Folder
-      run: Compress-Archive -Path "${{ env.PROJECT_ROOT }}${{ env.PUBLISH_DIR }}" -DestinationPath "${{ env.PROJECT_ROOT }}${{ env.ARTIFACT_DIR }}${{ env.RELEASE_ZIP_NAME }}.zip"
+      run: Compress-Archive -Path "${{ env.PROJECT_ROOT }}${{ env.PUBLISH_DIR }}" -DestinationPath "${{ env.PROJECT_ROOT }}${{ env.ARTIFACT_DIR }}${{ env.RELEASE_ZIP_NAME }}"
 
   release:
     needs: build
@@ -59,6 +59,6 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ env.PROJECT_ROOT }}${{ env.ARTIFACT_DIR }}/*
-        asset_name: ${{ env.RELEASE_ZIP_NAME }}.zip
+        asset_path: ${{ env.PROJECT_ROOT }}${{ env.ARTIFACT_DIR }}${{ env.RELEASE_ZIP_NAME }}
+        asset_name: ${{ env.RELEASE_ZIP_NAME }}
         asset_content_type: application/zip
