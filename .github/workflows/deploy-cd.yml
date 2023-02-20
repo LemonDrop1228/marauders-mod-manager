@@ -22,13 +22,13 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore NuGet Packages
-      run: dotnet restore
+      run: dotnet restore MaraudersModManager.sln
 
     - name: Build
-      run: dotnet build -c Release
+      run: dotnet build MaraudersModManager.sln -c Release
 
     - name: Publish
-      run: dotnet publish -c Release -r win-x64 /p:PublishSingleFile=true /p:PublishTrimmed=true
+      run: dotnet publish MaraudersModManager.sln -c Release -r win-x64 /p:PublishSingleFile=true /p:PublishTrimmed=true
       env:
         PUBLISH_DIR: ./bin/Release/net6.0-windows/win-x64/publish
 
