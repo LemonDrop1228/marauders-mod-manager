@@ -36,7 +36,7 @@
                               Duration="500"/>
     </Window.Resources>
 
-    <!-- Testing Automerge workflow v3 -->
+    <!-- Testing Automerge workflow v4 -->
     
     <Border Padding="15">
         <materialDesign:Card Background="{DynamicResource ParchmentBrush}" UniformCornerRadius="0" Padding="3">
