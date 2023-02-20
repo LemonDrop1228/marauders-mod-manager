@@ -29,7 +29,7 @@ jobs:
       run: dotnet build ${{env.PROJECT_PATH}} -c Release
 
     - name: Publish
-      run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 /p:PublishSingleFile=true /p:PublishTrimmed=true
+      run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 /p:PublishSingleFile=true
       env:
         PUBLISH_DIR: ./bin/Release/net6.0-windows/win-x64/publish
 
