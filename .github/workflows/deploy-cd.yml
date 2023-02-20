@@ -4,8 +4,6 @@ on:
     # Exclude non-version tag pushes
     tags:
       - 'v*.*.*'
-  pull_request:
-    branches: [main]
 
 jobs:
   build:
