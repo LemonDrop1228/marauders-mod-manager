@@ -36,7 +36,7 @@ jobs:
       run: dotnet publish "${{ env.PROJECT_ROOT }}${{ env.PROJECT_NAME }}" -c Release -r win-x64 /p:PublishSingleFile=true /p:WarningLevel=0 --clp:ErrorsOnly
 
     - name: Zip Publish Folder
-      run: Compress-Archive -Path "${{ env.PROJECT_ROOT }}${{ env.PUBLISH_DIR }} -DestinationPath ./bin/Release/${{ env.RELEASE_ZIP_NAME }}.zip
+      run: Compress-Archive -Path "${{ env.PROJECT_ROOT }}${{ env.PUBLISH_DIR }}" -DestinationPath ./bin/Release/${{ env.RELEASE_ZIP_NAME }}.zip
 
   release:
     needs: build
