@@ -8,6 +8,7 @@ on:
 env:
     PROJECT_PATH: "src/MaraudersModManager/MaraudersModManager/MaraudersModManager.csproj"
     RELEASE_ZIP_NAME: Release-${{ github.ref }}
+    PUBLISH_DIR: ./bin/Release/net6.0-windows/win-x64/publish
 
 jobs:
   build:
@@ -31,8 +32,6 @@ jobs:
 
     - name: Publish
       run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 /p:PublishSingleFile=true /p:WarningLevel=0
-      env:
-        PUBLISH_DIR: ./bin/Release/net6.0-windows/win-x64/publish
 
     - name: Zip Publish Folder
       run: Compress-Archive -Path ${{ env.PUBLISH_DIR }} -DestinationPath ./bin/Release/${{ env.RELEASE_ZIP_NAME }}.zip
