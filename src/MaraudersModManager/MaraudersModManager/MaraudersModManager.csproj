@@ -30,9 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="C:\Users\MrW\Pictures\MagicModManager\marauders-maplogo.png">
-        <Link>Resources\Images\marauders-maplogo.png</Link>
-      </Resource>
+      <Resource Include="Resources\Images\marauders-maplogo.png"/>
       <None Remove="appsettings.yaml" />
       <None Remove="Resources\Images\marauders-map-moody.gif" />
       <None Remove="Resources\Fonts\purple-3.ttf" />
