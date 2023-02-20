@@ -23,7 +23,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore NuGet Packages
-      run: dotnet restore MaraudersModManager.sln
+      run: dotnet restore ${{env.PROJECT_PATH}}
 
     - name: Build
       run: dotnet build ${{env.PROJECT_PATH}} -c Release
