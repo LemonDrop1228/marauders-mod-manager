@@ -1,13 +1,15 @@
 ﻿using MaraudersModManager.Extensions;
 using MaraudersModManager.FileSystem;
 using Microsoft.Extensions.Configuration;
+using PropertyChanged;
 
 namespace MaraudersModManager.Settings;
 
+[AddINotifyPropertyChangedInterface]
 public class SettingsManagerService : ISettingsManagerService
 {
     private readonly IFileSystemService _fileSystemService;
-    private AppSettings Settings { get; set; }
+    public AppSettings Settings { get; set; }
 
     private readonly IConfiguration _configuration;
     private IFileInfoEx File { get; set; }
@@ -15,7 +17,7 @@ public class SettingsManagerService : ISettingsManagerService
     public SettingsManagerService(IConfiguration configuration, IFileSystemService fileSystemService)
     {
         _fileSystemService = fileSystemService;
-        Settings = new AppSettings(configuration.GetSection("SteamOptions").Get<SteamOptions>(), configuration.GetSection("MarauderOptions").Get<MaruaderOptions>());
+        Settings = new AppSettings(configuration.GetSection("SteamOptions").Get<SteamOptions>(), configuration.GetSection("MarauderOptions").Get<MarauderOptions>());
         _configuration = configuration;
         this.Load();
     }
@@ -32,6 +34,7 @@ public class SettingsManagerService : ISettingsManagerService
 
     public ISettingsManagerService Save()
     {
+        Update();
         File.Write();
         return this;
     }

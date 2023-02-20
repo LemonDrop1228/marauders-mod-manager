@@ -1,13 +1,16 @@
-﻿namespace MaraudersModManager.Settings;
+﻿using PropertyChanged;
 
+namespace MaraudersModManager.Settings;
+
+[AddINotifyPropertyChangedInterface]
 public class AppSettings
 {
-    public AppSettings(SteamOptions steamOptions, MaruaderOptions maruaderOptions)
+    public AppSettings(SteamOptions steamOptions, MarauderOptions marauderOptions)
     {
         SteamOptions = steamOptions;
-        MaruaderOptions = maruaderOptions;
+        MarauderOptions = marauderOptions;
     }
 
     public SteamOptions SteamOptions { get; set; }
-    public MaruaderOptions MaruaderOptions { get; set; }
+    public MarauderOptions MarauderOptions { get; set; }
 }
