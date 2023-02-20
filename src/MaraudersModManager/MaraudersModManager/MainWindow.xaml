@@ -15,9 +15,9 @@
         WindowStartupLocation="CenterScreen" 
         WindowStyle="None" ResizeMode="CanResizeWithGrip" 
         AllowsTransparency="True" Background="Transparent" MouseDown="MainWindow_OnMouseDown">
-    
+
     <Window.Resources>
-        <BitmapImage x:Key="LogoSplash" UriSource="../Resources/Images/marauders-maplogo.png" />
+        <BitmapImage x:Key="LogoSplash" UriSource="/Resources/Images/marauders-maplogo.png" />
         <xf:AnimationSettings x:Key="FadeAndBlurIn"
                               Kind="FadeFrom,BlurFrom"
                               Opacity="0"
@@ -35,23 +35,25 @@
                               BlurRadius="5"
                               Duration="500"/>
     </Window.Resources>
-    
+
     <Border Padding="15">
-        <materialDesign:Card Background="#EDD08F" UniformCornerRadius="0" Padding="3">
+        <materialDesign:Card Background="{DynamicResource ParchmentBrush}" UniformCornerRadius="0" Padding="3">
             <Grid>
                 <Image x:Name="Logo" Source="{StaticResource LogoSplash}" Stretch="Uniform"
                        xf:Animations.Primary="{StaticResource FadeAndBlurIn}" 
                        xf:Animations.Secondary="{xf:Animate BasedOn={StaticResource FadeAndBlurOut}, Event=MouseDown}"
                        xf:Animations.SecondaryCompletionCommand="{Binding Path=LogoFadeOutComplete, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"
                        xf:Animations.AllowOpacityReset="False"/>
-                
-                <Grid xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeAndBlurInNoDelay}, Event=None}" Opacity="0"
+
+                <Grid x:Name="HostGrid" xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeAndBlurInNoDelay}, Event=None}" Opacity="0" IsHitTestVisible="False"
                       xf:Animations.PrimaryBinding="{Binding ShowApp}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="75"/>
+                        <RowDefinition Height="45"/>
                         <RowDefinition/>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="25"/>
                     </Grid.RowDefinitions>
+
+                    <!-- Title Bar -->
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -67,10 +69,57 @@
                             <Button Content="{materialDesign:PackIcon Kind=WindowClose, Size=24}" Click="CloseWindowClicked"/>
                         </st:StackPanel>
                     </Grid>
-                    
+
+                    <!-- Main Content -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="275"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <materialDesign:Card Background="{DynamicResource ParchmentBrush75}"
+                                             UniformCornerRadius="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition MinHeight="100" MaxHeight="100"/>
+                                </Grid.RowDefinitions>
+
+                                <ItemsControl ItemsSource="{Binding DefaultViews}"
+                                              Margin="0 12">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <Button HorizontalContentAlignment="Stretch" Margin="5" Padding="1 3"
+                                                        Style="{StaticResource MaterialDesignFlatAccentButton}"
+                                                        Command="{Binding Path=ChangeView,
+																		   RelativeSource={RelativeSource
+																		   AncestorType={x:Type local:MainWindow}}}"
+                                                        CommandParameter="{Binding DataContext,
+																RelativeSource={RelativeSource Self}}">
+                                                    <st:StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" MarginBetweenChildren="5">
+                                                        <materialDesign:PackIcon Kind="{Binding ViewRef.ViewMenuData.ViewIcon}" Height="24" Width="24"/>
+                                                        <TextBlock Text="{Binding ViewRef.ViewMenuData.ViewLabel}" VerticalAlignment="Center" FontSize="18" Margin="0 3"/>
+                                                    </st:StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </materialDesign:Card>
+
+                        <materialDesign:Card Background="{DynamicResource ParchmentBrush75}" Grid.Column="2" x:Name="HostElement" Content="{Binding Path=ActiveView}"/>
+                    </Grid>
+
+                    <!-- Footer -->
+                    <Grid Grid.Row="2">
+
+                    </Grid>
                 </Grid>
             </Grid>
         </materialDesign:Card>
-        
+
     </Border>
 </Window>

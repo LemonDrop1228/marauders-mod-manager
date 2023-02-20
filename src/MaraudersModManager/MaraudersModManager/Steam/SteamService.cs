@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Gameloop.Vdf;
 using Gameloop.Vdf.JsonConverter;
+using MaraudersModManager.Extensions;
 using MaraudersModManager.FileSystem;
+using MaraudersModManager.Settings;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using static MaraudersModManager.Constants.AppConstants;
 
@@ -12,22 +16,48 @@ namespace MaraudersModManager.Steam;
 public interface ISteamService
 {
     string GetGameRootPath();
-    void Initialize(string path);
+    void Initialize();
 }
 
 public class SteamService : ISteamService
 {
     private readonly IFileSystemService _fileSystemService;
+    private readonly ISettingsManagerService _settingService;
     private string SteamInstallationPath { get; set; }
 
-    public SteamService(IFileSystemService fileSystemService)
+    public SteamService(IFileSystemService fileSystemService, ISettingsManagerService settingService)
     {
         _fileSystemService = fileSystemService;
+        _settingService = settingService;
     }
     
-    public void Initialize(string path)
+    public void Initialize()
     {
-        SteamInstallationPath = path;
+        if (!_settingService.IsInitialized)
+        {
+            var steamPath = (Registry.GetValue(SteamRegistryKey, SteamInstallPathRegistryValue, string.Empty) as string).Replace("/", "\\\\");
+        
+            if (steamPath.HasContent() && Directory.Exists(steamPath))
+            {
+                SteamInstallationPath = steamPath;
+            
+                if (Directory.Exists(Path.Combine(steamPath, LibraryConfigFileRoot)) &&
+                    File.Exists(Path.Combine(steamPath, LibraryConfigFileRoot, LibraryConfigFileName)))
+                {
+                    string gameRootPath = GetGameRootPath();
+
+                    if (gameRootPath.HasContent() && Directory.Exists(gameRootPath))
+                    {
+                        _settingService.Initialize(steamPath, gameRootPath);
+                        _settingService.Update().Save();
+#if DEBUG
+                        Debug.WriteLine($"Steam Path: {steamPath}");
+                        Debug.WriteLine($"Game Root Path: {gameRootPath}");
+#endif
+                    }
+                }
+            }
+        }
     }
 
     public string GetGameRootPath()

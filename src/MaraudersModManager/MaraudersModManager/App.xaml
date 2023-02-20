@@ -7,10 +7,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#edd08f" SecondaryColor="DarkGreen" />
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#edd08f" SecondaryColor="DarkRed" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/XamlFlair.WPF;component/DefaultAnimations.xaml"/>
-                
+                <ResourceDictionary Source="pack://application:,,,/MaraudersModManager;component/Styles/CustomBrushes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
