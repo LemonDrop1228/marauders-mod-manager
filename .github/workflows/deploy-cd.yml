@@ -6,10 +6,12 @@ on:
       - 'v*.*.*'
 
 env:
-    PROJECT_PATH: "src/MaraudersModManager/MaraudersModManager/MaraudersModManager.csproj"
+    PROJECT_ROOT: src/MaraudersModManager/MaraudersModManager/
+    PROJECT_NAME: MaraudersModManager.csproj
+    PROJECT_PATH: ${{ env.PROJECT_ROOT }}${{ env.PROJECT_NAME }}
+    PUBLISH_DIR: ${{ env.PROJECT_ROOT }}bin/Release/net6.0-windows/win-x64/publish
+    ARTIFACT_DIR: ${{ env.PROJECT_ROOT }}/bin/Release/
     RELEASE_ZIP_NAME: Release-${{ github.ref_name }}
-    PUBLISH_DIR: ./bin/Release/net6.0-windows/win-x64/publish
-    ARTIFACT_DIR: ./bin/Release/
 
 jobs:
   build:
@@ -29,13 +31,13 @@ jobs:
       run: dotnet restore ${{env.PROJECT_PATH}}
 
     - name: Build
-      run: dotnet build ${{env.PROJECT_PATH}} -c Release --clp:ErrorsOnly
+      run: dotnet build "${{env.PROJECT_PATH}}" -c Release --clp:ErrorsOnly
 
     - name: Publish
-      run: dotnet publish ${{env.PROJECT_PATH}} -c Release -r win-x64 /p:PublishSingleFile=true /p:WarningLevel=0 --clp:ErrorsOnly
+      run: dotnet publish "${{env.PROJECT_PATH}}" -c Release -r win-x64 /p:PublishSingleFile=true /p:WarningLevel=0 --clp:ErrorsOnly
 
     - name: Zip Publish Folder
-      run: Compress-Archive -Path ${{ env.PUBLISH_DIR }} -DestinationPath ./bin/Release/${{ env.RELEASE_ZIP_NAME }}.zip
+      run: Compress-Archive -Path "${{ env.PUBLISH_DIR }} -DestinationPath ./bin/Release/${{ env.RELEASE_ZIP_NAME }}.zip
 
   release:
     needs: build
