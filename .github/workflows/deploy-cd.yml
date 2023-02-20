@@ -8,7 +8,7 @@ on:
 env:
     PROJECT_ROOT: src/MaraudersModManager/MaraudersModManager/
     PROJECT_NAME: MaraudersModManager.csproj
-    PUBLISH_DIR: bin/Release/net6.0-windows/win-x64/publish
+    PUBLISH_DIR: bin/Release/net6.0-windows/win-x64/publish/*
     ARTIFACT_DIR: bin/Release/
     RELEASE_ZIP_NAME: Release-${{ github.ref_name }}.zip
 
