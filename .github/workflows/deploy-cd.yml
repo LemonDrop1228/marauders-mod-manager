@@ -27,7 +27,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore NuGet Packages
-      run: dotnet restore ${{env.PROJECT_PATH}}
+      run: dotnet restore "${{ env.PROJECT_ROOT }}${{ env.PROJECT_NAME }}"
 
     - name: Build
       run: dotnet build "${{ env.PROJECT_ROOT }}${{ env.PROJECT_NAME }}" -c Release --clp:ErrorsOnly
