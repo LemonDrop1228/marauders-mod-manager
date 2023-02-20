@@ -1,9 +1,11 @@
 ﻿using MaraudersModManager.Extensions;
 using Newtonsoft.Json;
+using PropertyChanged;
 
 namespace MaraudersModManager.Settings;
 
-public class MaruaderOptions
+[AddINotifyPropertyChangedInterface]
+public class MarauderOptions
 {
     public string ModInstallPath { get; set; }
     [JsonIgnore]

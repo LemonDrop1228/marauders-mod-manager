@@ -9,4 +9,5 @@ public interface ISettingsManagerService
     void Load();
     void Initialize(string steamPath, string gamePath);
     bool IsInitialized { get; }
+    AppSettings Settings { get; set; }
 }

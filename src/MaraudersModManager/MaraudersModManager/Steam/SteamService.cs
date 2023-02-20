@@ -13,12 +13,6 @@ using static MaraudersModManager.Constants.AppConstants;
 
 namespace MaraudersModManager.Steam;
 
-public interface ISteamService
-{
-    string GetGameRootPath();
-    void Initialize();
-}
-
 public class SteamService : ISteamService
 {
     private readonly IFileSystemService _fileSystemService;
@@ -35,7 +29,7 @@ public class SteamService : ISteamService
     {
         if (!_settingService.IsInitialized)
         {
-            var steamPath = (Registry.GetValue(SteamRegistryKey, SteamInstallPathRegistryValue, string.Empty) as string).Replace("/", "\\\\");
+            var steamPath = (Registry.GetValue(SteamRegistryKey, SteamInstallPathRegistryValue, string.Empty) as string).Replace("/", "\\");
         
             if (steamPath.HasContent() && Directory.Exists(steamPath))
             {
@@ -49,7 +43,7 @@ public class SteamService : ISteamService
                     if (gameRootPath.HasContent() && Directory.Exists(gameRootPath))
                     {
                         _settingService.Initialize(steamPath, gameRootPath);
-                        _settingService.Update().Save();
+                        _settingService.Save();
 #if DEBUG
                         Debug.WriteLine($"Steam Path: {steamPath}");
                         Debug.WriteLine($"Game Root Path: {gameRootPath}");
