@@ -41,7 +41,7 @@ jobs:
     - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Release-Artifact
+          name: Build-Artifact
           path: ${{ env.PROJECT_ROOT }}${{ env.ARTIFACT_DIR }}${{ env.RELEASE_ZIP_NAME }}
           retention-days: 1
 
@@ -63,7 +63,7 @@ jobs:
     - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
-            name: Release-Artifact
+            name: Build-Artifact
 
     - name: Upload Artifacts
       id: upload-release-asset
